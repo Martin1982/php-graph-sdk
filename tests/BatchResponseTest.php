@@ -42,7 +42,7 @@ class BatchResponseTest extends TestCase
      */
     protected $request;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->app = new Application('123', 'foo_secret');
         $this->request = new Request(
@@ -56,7 +56,7 @@ class BatchResponseTest extends TestCase
         );
     }
 
-    public function testASuccessfulJsonBatchResponseWillBeDecoded()
+    public function testASuccessfulJsonBatchResponseWillBeDecoded(): void
     {
         $graphResponseJson = '[';
         // Single Graph object.
@@ -89,7 +89,7 @@ class BatchResponseTest extends TestCase
         $this->assertInstanceOf(GraphNode::class, $graphEdge[1]);
     }
 
-    public function testABatchResponseCanBeIteratedOver()
+    public function testABatchResponseCanBeIteratedOver(): void
     {
         $graphResponseJson = '[';
         $graphResponseJson .= '{"code":200,"headers":[],"body":"{\"foo\":\"bar\"}"}';
@@ -112,7 +112,7 @@ class BatchResponseTest extends TestCase
         }
     }
 
-    public function testTheOriginalRequestCanBeObtainedForEachRequest()
+    public function testTheOriginalRequestCanBeObtainedForEachRequest(): void
     {
         $graphResponseJson = '[';
         $graphResponseJson .= '{"code":200,"headers":[],"body":"{\"foo\":\"bar\"}"}';
@@ -137,7 +137,7 @@ class BatchResponseTest extends TestCase
         $this->assertEquals('foo_token_three', $batchResponse[2]->getAccessToken());
     }
 
-    public function testHeadersFromBatchRequestCanBeAccessed()
+    public function testHeadersFromBatchRequestCanBeAccessed(): void
     {
         $graphResponseJson = '[';
         $graphResponseJson .= '{"code":200,"headers":[{"name":"Facebook-API-Version","value":"v2.0"},{"name":"ETag","value":"\"fooTag\""}],"body":"{\"foo\":\"bar\"}"}';

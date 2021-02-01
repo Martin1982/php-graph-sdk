@@ -73,7 +73,7 @@ class Client
     protected $enableBetaMode = false;
 
     /**
-     * @var httpClient HTTP client handler
+     * @var HttpClient HTTP client handler
      */
     protected $httpClient;
 
@@ -188,7 +188,7 @@ class Client
             $request->validateAccessToken();
         }
 
-        list($url, $method, $headers, $body) = $this->prepareRequestMessage($request);
+        [$url, $method, $headers, $body] = $this->prepareRequestMessage($request);
 
         $psr7Response = $this->httpClient->sendRequest(
             MessageFactoryDiscovery::find()->createRequest($method, $url, $headers, $body)

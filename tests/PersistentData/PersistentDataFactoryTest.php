@@ -39,7 +39,7 @@ class PersistentDataFactoryTest extends TestCase
      *
      * @dataProvider persistentDataHandlerProviders
      */
-    public function testCreatePersistentDataHandler($handler, $expected)
+    public function testCreatePersistentDataHandler($handler, $expected): void
     {
         $persistentDataHandler = PersistentDataFactory::createPersistentDataHandler($handler);
 
@@ -50,7 +50,7 @@ class PersistentDataFactoryTest extends TestCase
     /**
      * @return array
      */
-    public function persistentDataHandlerProviders()
+    public function persistentDataHandlerProviders(): array
     {
         $handlers = [
             ['memory', self::COMMON_NAMESPACE . 'InMemoryPersistentDataHandler'],

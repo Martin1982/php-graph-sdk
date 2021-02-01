@@ -33,7 +33,7 @@ class UrlManipulatorTest extends TestCase
      * @param mixed $dirtyUrl
      * @param mixed $expectedCleanUrl
      */
-    public function testParamsGetRemovedFromAUrl($dirtyUrl, $expectedCleanUrl)
+    public function testParamsGetRemovedFromAUrl($dirtyUrl, $expectedCleanUrl): void
     {
         $removeParams = [
             'state',
@@ -47,7 +47,7 @@ class UrlManipulatorTest extends TestCase
         $this->assertEquals($expectedCleanUrl, $currentUri);
     }
 
-    public function provideUris()
+    public function provideUris(): array
     {
         return [
             [
@@ -93,7 +93,7 @@ class UrlManipulatorTest extends TestCase
         ];
     }
 
-    public function testGracefullyHandlesUrlAppending()
+    public function testGracefullyHandlesUrlAppending(): void
     {
         $params = [];
         $url = 'https://www.foo.com/';
@@ -123,7 +123,7 @@ class UrlManipulatorTest extends TestCase
         $this->assertEquals('https://www.foo.com/?access_token=bar&foo=bar', $processed_url);
     }
 
-    public function testSlashesAreProperlyPrepended()
+    public function testSlashesAreProperlyPrepended(): void
     {
         $slashTestOne = UrlManipulator::forceSlashPrefix('foo');
         $slashTestTwo = UrlManipulator::forceSlashPrefix('/foo');
@@ -140,7 +140,7 @@ class UrlManipulatorTest extends TestCase
         $this->assertEquals('', $slashTestSix);
     }
 
-    public function testParamsCanBeReturnedAsArray()
+    public function testParamsCanBeReturnedAsArray(): void
     {
         $paramsOne = UrlManipulator::getParamsAsArray('/foo');
         $paramsTwo = UrlManipulator::getParamsAsArray('/foo?one=1&two=2');
@@ -162,14 +162,14 @@ class UrlManipulatorTest extends TestCase
      * @param mixed $urlTwo
      * @param mixed $expected
      */
-    public function testParamsCanBeMergedOntoUrlProperly($urlOne, $urlTwo, $expected)
+    public function testParamsCanBeMergedOntoUrlProperly($urlOne, $urlTwo, $expected): void
     {
         $result = UrlManipulator::mergeUrlParams($urlOne, $urlTwo);
 
         $this->assertEquals($result, $expected);
     }
 
-    public function provideMergableEndpoints()
+    public function provideMergableEndpoints(): array
     {
         return [
             [
@@ -195,7 +195,7 @@ class UrlManipulatorTest extends TestCase
         ];
     }
 
-    public function testGraphUrlsCanBeTrimmed()
+    public function testGraphUrlsCanBeTrimmed(): void
     {
         $fullGraphUrl = 'https://graph.facebook.com/';
         $baseGraphUrl = UrlManipulator::baseGraphUrlEndpoint($fullGraphUrl);

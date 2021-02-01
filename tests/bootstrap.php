@@ -20,7 +20,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
-date_default_timezone_set('Europe/Paris');
+date_default_timezone_set('Europe/Amsterdam');
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

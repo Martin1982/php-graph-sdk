@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
 
 class RequestBodyMultipartTest extends TestCase
 {
-    public function testCanProperlyEncodeAnArrayOfParams()
+    public function testCanProperlyEncodeAnArrayOfParams(): void
     {
         $message = new RequestBodyMultipart([
             'foo' => 'bar',
@@ -45,7 +45,7 @@ class RequestBodyMultipartTest extends TestCase
         $this->assertEquals($expectedBody, $body);
     }
 
-    public function testCanProperlyEncodeFilesAndParams()
+    public function testCanProperlyEncodeFilesAndParams(): void
     {
         $file = new File(__DIR__ . '/../foo.txt');
         $message = new RequestBodyMultipart([
@@ -65,7 +65,7 @@ class RequestBodyMultipartTest extends TestCase
         $this->assertEquals($expectedBody, $body);
     }
 
-    public function testSupportsMultidimensionalParams()
+    public function testSupportsMultidimensionalParams(): void
     {
         $message = new RequestBodyMultipart([
           'foo' => 'bar',

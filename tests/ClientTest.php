@@ -60,13 +60,13 @@ class ClientTest extends TestCase
      */
     public static $testClient;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fbApp = new Application('id', 'shhhh!');
         $this->fbClient = new Client(new MyFooHttpClient());
     }
 
-    public function testACustomHttpClientCanBeInjected()
+    public function testACustomHttpClientCanBeInjected(): void
     {
         $handler = new MyFooHttpClient();
         $client = new Client($handler);
@@ -75,7 +75,7 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(MyFooHttpClient::class, $httpClient);
     }
 
-    public function testTheHttpClientWillFallbackToDefault()
+    public function testTheHttpClientWillFallbackToDefault(): void
     {
         $client = new Client();
         $httpClient = $client->getHttpClient();
@@ -83,7 +83,7 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(HttpClient::class, $httpClient);
     }
 
-    public function testBetaModeCanBeDisabledOrEnabledViaConstructor()
+    public function testBetaModeCanBeDisabledOrEnabledViaConstructor(): void
     {
         $client = new Client(null, false);
         $url = $client->getBaseGraphUrl();
@@ -94,7 +94,7 @@ class ClientTest extends TestCase
         $this->assertEquals(Client::BASE_GRAPH_URL_BETA, $url);
     }
 
-    public function testBetaModeCanBeDisabledOrEnabledViaMethod()
+    public function testBetaModeCanBeDisabledOrEnabledViaMethod(): void
     {
         $client = new Client();
         $client->enableBetaMode(false);
@@ -106,7 +106,7 @@ class ClientTest extends TestCase
         $this->assertEquals(Client::BASE_GRAPH_URL_BETA, $url);
     }
 
-    public function testGraphVideoUrlCanBeSet()
+    public function testGraphVideoUrlCanBeSet(): void
     {
         $client = new Client();
         $client->enableBetaMode(false);
@@ -118,7 +118,7 @@ class ClientTest extends TestCase
         $this->assertEquals(Client::BASE_GRAPH_VIDEO_URL_BETA, $url);
     }
 
-    public function testARequestEntityCanBeUsedToSendARequestToGraph()
+    public function testARequestEntityCanBeUsedToSendARequestToGraph(): void
     {
         $fbRequest = new Request($this->fbApp, 'token', 'GET', '/foo');
         $response = $this->fbClient->sendRequest($fbRequest);
@@ -128,7 +128,7 @@ class ClientTest extends TestCase
         $this->assertEquals('{"data":[{"id":"123","name":"Foo"},{"id":"1337","name":"Bar"}]}', $response->getBody());
     }
 
-    public function testABatchRequestEntityCanBeUsedToSendABatchRequestToGraph()
+    public function testABatchRequestEntityCanBeUsedToSendABatchRequestToGraph(): void
     {
         $fbRequests = [
             new Request($this->fbApp, 'token', 'GET', '/foo'),
@@ -144,7 +144,7 @@ class ClientTest extends TestCase
         $this->assertEquals('POST', $response[1]->getRequest()->getMethod());
     }
 
-    public function testABatchRequestWillProperlyBatchFiles()
+    public function testABatchRequestWillProperlyBatchFiles(): void
     {
         $fbRequests = [
             new Request($this->fbApp, 'token', 'POST', '/photo', [
@@ -159,19 +159,19 @@ class ClientTest extends TestCase
         $fbBatchRequest = new BatchRequest($this->fbApp, $fbRequests);
         $fbBatchRequest->prepareRequestsForBatch();
 
-        list($url, $method, $headers, $body) = $this->fbClient->prepareRequestMessage($fbBatchRequest);
+        [$url, $method, $headers, $body] = $this->fbClient->prepareRequestMessage($fbBatchRequest);
 
-        $this->assertEquals(Client::BASE_GRAPH_VIDEO_URL, $url);
-        $this->assertEquals('POST', $method);
-        $this->assertContains('multipart/form-data; boundary=', $headers['Content-Type']);
-        $this->assertContains('Content-Disposition: form-data; name="batch"', $body);
-        $this->assertContains('Content-Disposition: form-data; name="include_headers"', $body);
-        $this->assertContains('"name":0,"attached_files":', $body);
-        $this->assertContains('"name":1,"attached_files":', $body);
-        $this->assertContains('"; filename="foo.txt"', $body);
+        self::assertEquals(Client::BASE_GRAPH_VIDEO_URL, $url);
+        self::assertEquals('POST', $method);
+        self::stringContains('multipart/form-data; boundary=', $headers['Content-Type']);
+        self::stringContains('Content-Disposition: form-data; name="batch"', $body);
+        self::stringContains('Content-Disposition: form-data; name="include_headers"', $body);
+        self::stringContains('"name":0,"attached_files":', $body);
+        self::stringContains('"name":1,"attached_files":', $body);
+        self::stringContains('"; filename="foo.txt"', $body);
     }
 
-    public function testARequestOfParamsWillBeUrlEncoded()
+    public function testARequestOfParamsWillBeUrlEncoded(): void
     {
         $fbRequest = new Request($this->fbApp, 'token', 'POST', '/foo', ['foo' => 'bar']);
         $response = $this->fbClient->sendRequest($fbRequest);
@@ -181,7 +181,7 @@ class ClientTest extends TestCase
         $this->assertEquals('application/x-www-form-urlencoded', $headersSent['Content-Type']);
     }
 
-    public function testARequestWithFilesWillBeMultipart()
+    public function testARequestWithFilesWillBeMultipart(): void
     {
         $myFile = new File(__DIR__ . '/foo.txt');
         $fbRequest = new Request($this->fbApp, 'token', 'POST', '/foo', ['file' => $myFile]);
@@ -189,14 +189,11 @@ class ClientTest extends TestCase
 
         $headersSent = $response->getRequest()->getHeaders();
 
-        $this->assertContains('multipart/form-data; boundary=', $headersSent['Content-Type']);
+        self::assertStringContainsString('multipart/form-data; boundary=', $headersSent['Content-Type']);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testARequestValidatesTheAccessTokenWhenOneIsNotProvided()
-    {
+    public function testARequestValidatesTheAccessTokenWhenOneIsNotProvided(): void
+    {$this->expectException(\Facebook\Exception\SDKException::class);
         $fbRequest = new Request($this->fbApp, null, 'GET', '/foo');
         $this->fbClient->sendRequest($fbRequest);
     }
@@ -204,7 +201,7 @@ class ClientTest extends TestCase
     /**
      * @group integration
      */
-    public function testCanCreateATestUserAndGetTheProfileAndThenDeleteTheTestUser()
+    public function testCanCreateATestUserAndGetTheProfileAndThenDeleteTheTestUser(): void
     {
         $this->initializeTestApp();
 
@@ -254,7 +251,7 @@ class ClientTest extends TestCase
         $this->assertTrue($graphNode->getField('success'));
     }
 
-    public function initializeTestApp()
+    public function initializeTestApp(): void
     {
         if (!file_exists(__DIR__ . '/TestCredentials.php')) {
             throw new SDKException(

@@ -23,11 +23,12 @@
 namespace Facebook\Tests\Authentication;
 
 use Facebook\Authentication\AccessTokenMetadata;
+use Facebook\Exception\SDKException;
 use PHPUnit\Framework\TestCase;
 
 class AccessTokenMetadataTest extends TestCase
 {
-    protected $graphResponseData = [
+    protected array $graphResponseData = [
         'data' => [
             'app_id' => '123',
             'application' => 'Foo App',
@@ -50,81 +51,77 @@ class AccessTokenMetadataTest extends TestCase
         ],
     ];
 
-    public function testDatesGetCastToDateTime()
+    public function testDatesGetCastToDateTime(): void
     {
         $metadata = new AccessTokenMetadata($this->graphResponseData);
 
         $expires = $metadata->getExpiresAt();
         $issuedAt = $metadata->getIssuedAt();
 
-        $this->assertInstanceOf(\DateTime::class, $expires);
-        $this->assertInstanceOf(\DateTime::class, $issuedAt);
+        self::assertInstanceOf(\DateTime::class, $expires);
+        self::assertInstanceOf(\DateTime::class, $issuedAt);
     }
 
-    public function testAllTheGettersReturnTheProperValue()
+    public function testAllTheGettersReturnTheProperValue(): void
     {
         $metadata = new AccessTokenMetadata($this->graphResponseData);
 
-        $this->assertEquals('123', $metadata->getAppId());
-        $this->assertEquals('Foo App', $metadata->getApplication());
-        $this->assertTrue($metadata->isError(), 'Expected an error');
-        $this->assertEquals('190', $metadata->getErrorCode());
-        $this->assertEquals('Foo error message.', $metadata->getErrorMessage());
-        $this->assertEquals('463', $metadata->getErrorSubcode());
-        $this->assertFalse($metadata->getIsValid(), 'Expected the access token to not be valid');
-        $this->assertEquals('iphone-sso', $metadata->getSso());
-        $this->assertEquals('rerequest', $metadata->getAuthType());
-        $this->assertEquals('no-replicatey', $metadata->getAuthNonce());
-        $this->assertEquals('1000', $metadata->getProfileId());
-        $this->assertEquals(['public_profile', 'basic_info', 'user_friends'], $metadata->getScopes());
-        $this->assertEquals('1337', $metadata->getUserId());
+        self::assertEquals('123', $metadata->getAppId());
+        self::assertEquals('Foo App', $metadata->getApplication());
+        self::assertTrue($metadata->isError(), 'Expected an error');
+        self::assertEquals('190', $metadata->getErrorCode());
+        self::assertEquals('Foo error message.', $metadata->getErrorMessage());
+        self::assertEquals('463', $metadata->getErrorSubcode());
+        self::assertFalse($metadata->getIsValid(), 'Expected the access token to not be valid');
+        self::assertEquals('iphone-sso', $metadata->getSso());
+        self::assertEquals('rerequest', $metadata->getAuthType());
+        self::assertEquals('no-replicatey', $metadata->getAuthNonce());
+        self::assertEquals('1000', $metadata->getProfileId());
+        self::assertEquals(['public_profile', 'basic_info', 'user_friends'], $metadata->getScopes());
+        self::assertEquals('1337', $metadata->getUserId());
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testInvalidMetadataWillThrow()
+    public function testInvalidMetadataWillThrow(): void
     {
+        $this->expectException(SDKException::class);
         new AccessTokenMetadata(['foo' => 'bar']);
     }
 
-    public function testAnExpectedAppIdWillNotThrow()
+    public function testAnExpectedAppIdWillNotThrow(): void
     {
         $metadata = new AccessTokenMetadata($this->graphResponseData);
         $metadata->validateAppId('123');
 
-        $this->assertTrue(true);
+        self::assertTrue(true);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testAnUnexpectedAppIdWillThrow()
+    public function testAnUnexpectedAppIdWillThrow(): void
     {
+        $this->expectException(SDKException::class);
+
         $metadata = new AccessTokenMetadata($this->graphResponseData);
         $metadata->validateAppId('foo');
 
-        $this->assertTrue(true);
+        self::assertTrue(true);
     }
 
-    public function testAnExpectedUserIdWillNotThrow()
+    public function testAnExpectedUserIdWillNotThrow(): void
     {
         $metadata = new AccessTokenMetadata($this->graphResponseData);
         $metadata->validateUserId('1337');
 
-        $this->assertTrue(true);
+        self::assertTrue(true);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testAnUnexpectedUserIdWillThrow()
+    public function testAnUnexpectedUserIdWillThrow(): void
     {
+        $this->expectException(SDKException::class);
+
         $metadata = new AccessTokenMetadata($this->graphResponseData);
         $metadata->validateUserId('foo');
     }
 
-    public function testAnActiveAccessTokenWillNotThrow()
+    public function testAnActiveAccessTokenWillNotThrow(): void
     {
         $this->graphResponseData['data']['expires_at'] = time() + 1000;
         $metadata = new AccessTokenMetadata($this->graphResponseData);
@@ -133,11 +130,10 @@ class AccessTokenMetadataTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testAnExpiredAccessTokenWillThrow()
+    public function testAnExpiredAccessTokenWillThrow(): void
     {
+        $this->expectException(SDKException::class);
+
         $this->graphResponseData['data']['expires_at'] = time() - 1000;
         $metadata = new AccessTokenMetadata($this->graphResponseData);
         $metadata->validateExpiration();

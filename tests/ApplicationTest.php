@@ -24,6 +24,7 @@ namespace Facebook\Tests;
 
 use Facebook\Application;
 use Facebook\Authentication\AccessToken;
+use Facebook\Exception\SDKException;
 use PHPUnit\Framework\TestCase;
 
 class ApplicationTest extends TestCase
@@ -33,22 +34,22 @@ class ApplicationTest extends TestCase
      */
     private $app;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->app = new Application('id', 'secret');
     }
 
-    public function testGetId()
+    public function testGetId(): void
     {
         $this->assertEquals('id', $this->app->getId());
     }
 
-    public function testGetSecret()
+    public function testGetSecret(): void
     {
         $this->assertEquals('secret', $this->app->getSecret());
     }
 
-    public function testAnAppAccessTokenCanBeGenerated()
+    public function testAnAppAccessTokenCanBeGenerated(): void
     {
         $accessToken = $this->app->getAccessToken();
 
@@ -56,7 +57,7 @@ class ApplicationTest extends TestCase
         $this->assertEquals('id|secret', (string)$accessToken);
     }
 
-    public function testSerialization()
+    public function testSerialization(): void
     {
         $newApp = unserialize(serialize($this->app));
 
@@ -65,15 +66,13 @@ class ApplicationTest extends TestCase
         $this->assertEquals('secret', $newApp->getSecret());
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testOverflowIntegersWillThrow()
+    public function testOverflowIntegersWillThrow(): void
     {
+        $this->expectException(SDKException::class);
         new Application(PHP_INT_MAX + 1, "foo");
     }
 
-    public function testUnserializedIdsWillBeString()
+    public function testUnserializedIdsWillBeString(): void
     {
         $newApp = unserialize(serialize(new Application(1, "foo")));
 

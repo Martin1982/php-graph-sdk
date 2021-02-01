@@ -36,7 +36,7 @@ class ResponseTest extends TestCase
      */
     protected $request;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $app = new Application('123', 'foo_secret');
         $this->request = new Request(
@@ -50,7 +50,7 @@ class ResponseTest extends TestCase
         );
     }
 
-    public function testAnETagCanBeProperlyAccessed()
+    public function testAnETagCanBeProperlyAccessed(): void
     {
         $response = new Response($this->request, '', 200, ['ETag' => 'foo_tag']);
 
@@ -59,7 +59,7 @@ class ResponseTest extends TestCase
         $this->assertEquals('foo_tag', $eTag);
     }
 
-    public function testAProperAppSecretProofCanBeGenerated()
+    public function testAProperAppSecretProofCanBeGenerated(): void
     {
         $response = new Response($this->request);
 
@@ -68,7 +68,7 @@ class ResponseTest extends TestCase
         $this->assertEquals('df4256903ba4e23636cc142117aa632133d75c642bd2a68955be1443bd14deb9', $appSecretProof);
     }
 
-    public function testASuccessfulJsonResponseWillBeDecodedToAGraphNode()
+    public function testASuccessfulJsonResponseWillBeDecodedToAGraphNode(): void
     {
         $graphResponseJson = '{"id":"123","name":"Foo"}';
         $response = new Response($this->request, $graphResponseJson, 200);
@@ -84,7 +84,7 @@ class ResponseTest extends TestCase
         $this->assertInstanceOf(GraphNode::class, $graphNode);
     }
 
-    public function testASuccessfulJsonResponseWillBeDecodedToAGraphEdge()
+    public function testASuccessfulJsonResponseWillBeDecodedToAGraphEdge(): void
     {
         $graphResponseJson = '{"data":[{"id":"123","name":"Foo"},{"id":"1337","name":"Bar"}]}';
         $response = new Response($this->request, $graphResponseJson, 200);
@@ -96,7 +96,7 @@ class ResponseTest extends TestCase
         $this->assertInstanceOf(GraphNode::class, $graphEdge[1]);
     }
 
-    public function testASuccessfulUrlEncodedKeyValuePairResponseWillBeDecoded()
+    public function testASuccessfulUrlEncodedKeyValuePairResponseWillBeDecoded(): void
     {
         $graphResponseKeyValuePairs = 'id=123&name=Foo';
         $response = new Response($this->request, $graphResponseKeyValuePairs, 200);
@@ -110,7 +110,7 @@ class ResponseTest extends TestCase
         ], $decodedResponse);
     }
 
-    public function testErrorStatusCanBeCheckedWhenAnErrorResponseIsReturned()
+    public function testErrorStatusCanBeCheckedWhenAnErrorResponseIsReturned(): void
     {
         $graphResponse = '{"error":{"message":"Foo error.","type":"OAuthException","code":190,"error_subcode":463}}';
         $response = new Response($this->request, $graphResponse, 401);

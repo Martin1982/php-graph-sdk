@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase
 {
-    public function testAnEmptyRequestEntityCanInstantiate()
+    public function testAnEmptyRequestEntityCanInstantiate(): void
     {
         $app = new Application('123', 'foo_secret');
         $request = new Request($app);
@@ -38,40 +38,34 @@ class RequestTest extends TestCase
         $this->assertInstanceOf(Request::class, $request);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testAMissingAccessTokenWillThrow()
+    public function testAMissingAccessTokenWillThrow(): void
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $app = new Application('123', 'foo_secret');
         $request = new Request($app);
 
         $request->validateAccessToken();
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testAMissingMethodWillThrow()
+    public function testAMissingMethodWillThrow(): void
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $app = new Application('123', 'foo_secret');
         $request = new Request($app);
 
         $request->validateMethod();
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testAnInvalidMethodWillThrow()
+    public function testAnInvalidMethodWillThrow(): void
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $app = new Application('123', 'foo_secret');
         $request = new Request($app, 'foo_token', 'FOO');
 
         $request->validateMethod();
     }
 
-    public function testGetHeadersWillAutoAppendETag()
+    public function testGetHeadersWillAutoAppendETag(): void
     {
         $app = new Application('123', 'foo_secret');
         $request = new Request($app, null, 'GET', '/foo', [], 'fooETag');
@@ -84,7 +78,7 @@ class RequestTest extends TestCase
         $this->assertEquals($expectedHeaders, $headers);
     }
 
-    public function testGetParamsWillAutoAppendAccessTokenAndAppSecretProof()
+    public function testGetParamsWillAutoAppendAccessTokenAndAppSecretProof(): void
     {
         $app = new Application('123', 'foo_secret');
         $request = new Request($app, 'foo_token', 'POST', '/foo', ['foo' => 'bar']);
@@ -98,7 +92,7 @@ class RequestTest extends TestCase
         ], $params);
     }
 
-    public function testAnAccessTokenCanBeSetFromTheParams()
+    public function testAnAccessTokenCanBeSetFromTheParams(): void
     {
         $app = new Application('123', 'foo_secret');
         $request = new Request($app, null, 'POST', '/me', ['access_token' => 'bar_token']);
@@ -108,16 +102,14 @@ class RequestTest extends TestCase
         $this->assertEquals('bar_token', $accessToken);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testAccessTokenConflictsWillThrow()
+    public function testAccessTokenConflictsWillThrow(): void
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $app = new Application('123', 'foo_secret');
         new Request($app, 'foo_token', 'POST', '/me', ['access_token' => 'bar_token']);
     }
 
-    public function testAProperUrlWillBeGenerated()
+    public function testAProperUrlWillBeGenerated(): void
     {
         $app = new Application('123', 'foo_secret');
         $getRequest = new Request($app, 'foo_token', 'GET', '/foo', ['foo' => 'bar']);
@@ -136,7 +128,7 @@ class RequestTest extends TestCase
         $this->assertEquals($expectedUrl, $postUrl);
     }
 
-    public function testAuthenticationParamsAreStrippedAndReapplied()
+    public function testAuthenticationParamsAreStrippedAndReapplied(): void
     {
         $app = new Application('123', 'foo_secret');
 
@@ -168,7 +160,7 @@ class RequestTest extends TestCase
         $this->assertEquals($expectedParams, $params);
     }
 
-    public function testAFileCanBeAddedToParams()
+    public function testAFileCanBeAddedToParams(): void
     {
         $myFile = new File(__DIR__ . '/foo.txt');
         $params = [
@@ -186,7 +178,7 @@ class RequestTest extends TestCase
         $this->assertEquals('Foo Bar', $actualParams['name']);
     }
 
-    public function testAVideoCanBeAddedToParams()
+    public function testAVideoCanBeAddedToParams(): void
     {
         $myFile = new Video(__DIR__ . '/foo.txt');
         $params = [

@@ -27,21 +27,24 @@ use Facebook\GraphNode\GraphLocation;
 use Facebook\GraphNode\GraphPage;
 use Facebook\Response;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class GraphPageTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy|Response
      */
     protected $responseMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->responseMock = $this->prophesize(Response::class);
     }
 
-    public function testPagePropertiesReturnGraphPageObjects()
+    public function testPagePropertiesReturnGraphPageObjects(): void
     {
         $dataFromGraph = [
             'id' => '123',
@@ -67,7 +70,7 @@ class GraphPageTest extends TestCase
         $this->assertInstanceOf(GraphPage::class, $globalBrandParentPage);
     }
 
-    public function testLocationPropertyWillGetCastAsGraphLocationObject()
+    public function testLocationPropertyWillGetCastAsGraphLocationObject(): void
     {
         $dataFromGraph = [
             'id' => '123',

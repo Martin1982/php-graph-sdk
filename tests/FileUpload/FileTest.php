@@ -29,12 +29,12 @@ class FileTest extends TestCase
 {
     protected $testFile = '';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->testFile = __DIR__ . '/../foo.txt';
     }
 
-    public function testCanOpenAndReadAndCloseAFile()
+    public function testCanOpenAndReadAndCloseAFile(): void
     {
         $file = new File($this->testFile);
         $fileContents = $file->getContents();
@@ -42,7 +42,7 @@ class FileTest extends TestCase
         $this->assertEquals('This is a text file used for testing. Let\'s dance.', $fileContents);
     }
 
-    public function testPartialFilesCanBeCreated()
+    public function testPartialFilesCanBeCreated(): void
     {
         $file = new File($this->testFile, 14, 5);
         $fileContents = $file->getContents();
@@ -50,11 +50,9 @@ class FileTest extends TestCase
         $this->assertEquals('is a text file', $fileContents);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testTryingToOpenAFileThatDoesntExistsThrows()
+    public function testTryingToOpenAFileThatDoesntExistsThrows(): void
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         new File('does_not_exist.file');
     }
 }

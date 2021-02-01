@@ -29,21 +29,24 @@ use Facebook\GraphNode\GraphUser;
 use Facebook\GraphNode\GraphPage;
 use Facebook\GraphNode\Birthday;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class GraphUserTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy|Response
      */
     protected $responseMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->responseMock = $this->prophesize(Response::class);
     }
 
-    public function testDatesGetCastToDateTime()
+    public function testDatesGetCastToDateTime(): void
     {
         $dataFromGraph = [
             'updated_time' => '2016-04-26 13:22:05',
@@ -58,7 +61,7 @@ class GraphUserTest extends TestCase
         $this->assertInstanceOf(\DateTime::class, $updatedTime);
     }
 
-    public function testBirthdaysGetCastToBirthday()
+    public function testBirthdaysGetCastToBirthday(): void
     {
         $dataFromGraph = [
             'birthday' => '1984/01/01',
@@ -79,7 +82,7 @@ class GraphUserTest extends TestCase
         $this->assertEquals('1984/01/01', $birthday->format('Y/m/d'));
     }
 
-    public function testBirthdayCastHandlesDateWithoutYear()
+    public function testBirthdayCastHandlesDateWithoutYear(): void
     {
         $dataFromGraph = [
             'birthday' => '03/21',
@@ -96,7 +99,7 @@ class GraphUserTest extends TestCase
         $this->assertEquals('03/21', $birthday->format('m/d'));
     }
 
-    public function testBirthdayCastHandlesYearWithoutDate()
+    public function testBirthdayCastHandlesYearWithoutDate(): void
     {
         $dataFromGraph = [
             'birthday' => '1984',
@@ -113,7 +116,7 @@ class GraphUserTest extends TestCase
         $this->assertEquals('1984', $birthday->format('Y'));
     }
 
-    public function testPagePropertiesWillGetCastAsGraphPageObjects()
+    public function testPagePropertiesWillGetCastAsGraphPageObjects(): void
     {
         $dataFromGraph = [
             'id' => '123',
@@ -139,7 +142,7 @@ class GraphUserTest extends TestCase
         $this->assertInstanceOf(GraphPage::class, $location);
     }
 
-    public function testUserPropertiesWillGetCastAsGraphUserObjects()
+    public function testUserPropertiesWillGetCastAsGraphUserObjects(): void
     {
         $dataFromGraph = [
             'id' => '123',
@@ -159,7 +162,7 @@ class GraphUserTest extends TestCase
         $this->assertInstanceOf(GraphUser::class, $significantOther);
     }
 
-    public function testPicturePropertiesWillGetCastAsGraphPictureObjects()
+    public function testPicturePropertiesWillGetCastAsGraphPictureObjects(): void
     {
         $dataFromGraph = [
             'id' => '123',

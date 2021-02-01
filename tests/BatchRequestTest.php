@@ -35,12 +35,12 @@ class BatchRequestTest extends TestCase
      */
     private $app;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->app = new Application('123', 'foo_secret');
     }
 
-    public function testABatchRequestWillInstantiateWithTheProperProperties()
+    public function testABatchRequestWillInstantiateWithTheProperProperties(): void
     {
         $batchRequest = new BatchRequest($this->app, [], 'foo_token', 'v0.1337');
 
@@ -51,7 +51,7 @@ class BatchRequestTest extends TestCase
         $this->assertEquals('v0.1337', $batchRequest->getGraphVersion());
     }
 
-    public function testEmptyRequestWillFallbackToBatchDefaults()
+    public function testEmptyRequestWillFallbackToBatchDefaults(): void
     {
         $request = new Request();
 
@@ -60,7 +60,7 @@ class BatchRequestTest extends TestCase
         $this->assertRequestContainsAppAndToken($request, $this->app, 'foo_token');
     }
 
-    public function testRequestWithTokenOnlyWillFallbackToBatchDefaults()
+    public function testRequestWithTokenOnlyWillFallbackToBatchDefaults(): void
     {
         $request = new Request(null, 'bar_token');
 
@@ -69,7 +69,7 @@ class BatchRequestTest extends TestCase
         $this->assertRequestContainsAppAndToken($request, $this->app, 'bar_token');
     }
 
-    public function testRequestWithAppOnlyWillFallbackToBatchDefaults()
+    public function testRequestWithAppOnlyWillFallbackToBatchDefaults(): void
     {
         $customApp = new Application('1337', 'bar_secret');
         $request = new Request($customApp);
@@ -79,37 +79,31 @@ class BatchRequestTest extends TestCase
         $this->assertRequestContainsAppAndToken($request, $customApp, 'foo_token');
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testWillThrowWhenNoThereIsNoAppFallback()
+    public function testWillThrowWhenNoThereIsNoAppFallback(): void
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $batchRequest = new BatchRequest();
 
         $batchRequest->addFallbackDefaults(new Request(null, 'foo_token'));
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testWillThrowWhenNoThereIsNoAccessTokenFallback()
+    public function testWillThrowWhenNoThereIsNoAccessTokenFallback(): void
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $request = new BatchRequest();
 
         $request->addFallbackDefaults(new Request($this->app));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testAnInvalidTypeGivenToAddWillThrow()
+    public function testAnInvalidTypeGivenToAddWillThrow(): void
     {
+        $this->expectException(\InvalidArgumentException::class);
         $request = new BatchRequest();
 
         $request->add('foo');
     }
 
-    public function testAddingRequestsWillBeFormattedInAnArrayProperly()
+    public function testAddingRequestsWillBeFormattedInAnArrayProperly(): void
     {
         $requests = [
             null => new Request(null, null, 'GET', '/foo'),
@@ -127,7 +121,7 @@ class BatchRequestTest extends TestCase
         $this->assertRequestsMatch($requests, $formattedRequests);
     }
 
-    public function testANumericArrayOfRequestsCanBeAdded()
+    public function testANumericArrayOfRequestsCanBeAdded(): void
     {
         $requests = [
             new Request(null, null, 'GET', '/foo'),
@@ -140,7 +134,7 @@ class BatchRequestTest extends TestCase
         $this->assertRequestsMatch($requests, $formattedRequests);
     }
 
-    public function testAnAssociativeArrayOfRequestsCanBeAdded()
+    public function testAnAssociativeArrayOfRequestsCanBeAdded(): void
     {
         $requests = [
             'req-one' => new Request(null, null, 'GET', '/foo'),
@@ -153,7 +147,7 @@ class BatchRequestTest extends TestCase
         $this->assertRequestsMatch($requests, $formattedRequests);
     }
 
-    public function testRequestsCanBeInjectedIntoConstructor()
+    public function testRequestsCanBeInjectedIntoConstructor(): void
     {
         $requests = [
             new Request(null, null, 'GET', '/foo'),
@@ -167,21 +161,17 @@ class BatchRequestTest extends TestCase
         $this->assertRequestsMatch($requests, $formattedRequests);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testAZeroRequestCountWithThrow()
+    public function testAZeroRequestCountWithThrow(): void
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $batchRequest = new BatchRequest($this->app, [], 'foo_token');
 
         $batchRequest->validateBatchRequestCount();
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testMoreThanFiftyRequestsWillThrow()
+    public function testMoreThanFiftyRequestsWillThrow(): void
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $batchRequest = $this->createBatchRequest();
 
         $this->createAndAppendRequestsTo($batchRequest, 51);
@@ -189,7 +179,7 @@ class BatchRequestTest extends TestCase
         $batchRequest->validateBatchRequestCount();
     }
 
-    public function testLessOrEqualThanFiftyRequestsWillNotThrow()
+    public function testLessOrEqualThanFiftyRequestsWillNotThrow(): void
     {
         $batchRequest = $this->createBatchRequest();
 
@@ -206,7 +196,7 @@ class BatchRequestTest extends TestCase
      * @param mixed $request
      * @param mixed $expectedArray
      */
-    public function testBatchRequestEntitiesProperlyGetConvertedToAnArray($request, $expectedArray)
+    public function testBatchRequestEntitiesProperlyGetConvertedToAnArray($request, $expectedArray): void
     {
         $batchRequest = $this->createBatchRequest();
         $batchRequest->add($request, 'foo_name');
@@ -217,7 +207,7 @@ class BatchRequestTest extends TestCase
         $this->assertEquals($expectedArray, $batchRequestArray);
     }
 
-    public function requestsAndExpectedResponsesProvider()
+    public function requestsAndExpectedResponsesProvider(): array
     {
         $headers = $this->defaultHeaders();
 
@@ -253,7 +243,7 @@ class BatchRequestTest extends TestCase
         ];
     }
 
-    public function testBatchRequestsWithFilesGetConvertedToAnArray()
+    public function testBatchRequestsWithFilesGetConvertedToAnArray(): void
     {
         $request = new Request(null, null, 'POST', '/bar', [
             'message' => 'foobar',
@@ -283,7 +273,7 @@ class BatchRequestTest extends TestCase
         ], $batchRequestArray);
     }
 
-    public function testBatchRequestsWithOptionsGetConvertedToAnArray()
+    public function testBatchRequestsWithOptionsGetConvertedToAnArray(): void
     {
         $request = new Request(null, null, 'GET', '/bar');
         $batchRequest = $this->createBatchRequest();
@@ -308,7 +298,7 @@ class BatchRequestTest extends TestCase
         ], $batchRequestArray);
     }
 
-    public function testPreppingABatchRequestProperlySetsThePostParams()
+    public function testPreppingABatchRequestProperlySetsThePostParams(): void
     {
         $batchRequest = $this->createBatchRequest();
         $batchRequest->add(new Request(null, 'bar_token', 'GET', '/foo'), 'foo_name');
@@ -328,7 +318,7 @@ class BatchRequestTest extends TestCase
         $this->assertEquals($expectedBatchParams, $params);
     }
 
-    public function testPreppingABatchRequestProperlyMovesTheFiles()
+    public function testPreppingABatchRequestProperlyMovesTheFiles(): void
     {
         $batchRequest = $this->createBatchRequest();
         $batchRequest->add(new Request(null, 'bar_token', 'GET', '/foo'), 'foo_name');
@@ -354,7 +344,7 @@ class BatchRequestTest extends TestCase
         $this->assertEquals($expectedBatchParams, $params);
     }
 
-    public function testPreppingABatchRequestWithOptionsProperlySetsThePostParams()
+    public function testPreppingABatchRequestWithOptionsProperlySetsThePostParams(): void
     {
         $batchRequest = $this->createBatchRequest();
         $batchRequest->add(new Request(null, null, 'GET', '/foo'), [
@@ -377,7 +367,7 @@ class BatchRequestTest extends TestCase
         $this->assertEquals($expectedBatchParams, $params);
     }
 
-    private function assertRequestContainsAppAndToken(Request $request, Application $expectedApp, $expectedToken)
+    private function assertRequestContainsAppAndToken(Request $request, Application $expectedApp, $expectedToken): void
     {
         $app = $request->getApplication();
         $token = $request->getAccessToken();
@@ -386,7 +376,7 @@ class BatchRequestTest extends TestCase
         $this->assertEquals($expectedToken, $token);
     }
 
-    private function defaultHeaders()
+    private function defaultHeaders(): array
     {
         $headers = [];
         foreach (Request::getDefaultHeaders() as $name => $value) {
@@ -396,19 +386,19 @@ class BatchRequestTest extends TestCase
         return $headers;
     }
 
-    private function createAndAppendRequestsTo(BatchRequest $batchRequest, $number)
+    private function createAndAppendRequestsTo(BatchRequest $batchRequest, $number): void
     {
         for ($i = 0; $i < $number; $i++) {
             $batchRequest->add(new Request());
         }
     }
 
-    private function createBatchRequest()
+    private function createBatchRequest(): BatchRequest
     {
         return new BatchRequest($this->app, [], 'foo_token');
     }
 
-    private function createBatchRequestWithRequests(array $requests)
+    private function createBatchRequestWithRequests(array $requests): BatchRequest
     {
         $batchRequest = $this->createBatchRequest();
         $batchRequest->add($requests);
@@ -416,7 +406,7 @@ class BatchRequestTest extends TestCase
         return $batchRequest;
     }
 
-    private function assertRequestsMatch($requests, $formattedRequests)
+    private function assertRequestsMatch($requests, $formattedRequests): void
     {
         $expectedRequests = [];
         foreach ($requests as $name => $request) {

@@ -32,17 +32,17 @@ class FakeGraphApiForResumableUpload implements HttpClient
     public $transferCount = 0;
     private $respondWith = 'SUCCESS';
 
-    public function failOnStart()
+    public function failOnStart(): void
     {
         $this->respondWith = 'FAIL_ON_START';
     }
 
-    public function failOnTransfer()
+    public function failOnTransfer(): void
     {
         $this->respondWith = 'FAIL_ON_TRANSFER';
     }
 
-    public function sendRequest(RequestInterface $request)
+    public function sendRequest(RequestInterface $request): Response
     {
         $body = $request->getBody()->__toString();
         // Could be start, transfer or finish
@@ -55,7 +55,7 @@ class FakeGraphApiForResumableUpload implements HttpClient
         return $this->respondStart();
     }
 
-    private function respondStart()
+    private function respondStart(): Response
     {
         if ($this->respondWith == 'FAIL_ON_START') {
             return new Response(
@@ -74,7 +74,7 @@ class FakeGraphApiForResumableUpload implements HttpClient
         );
     }
 
-    private function respondTransfer()
+    private function respondTransfer(): Response
     {
         if ($this->respondWith == 'FAIL_ON_TRANSFER') {
             return new Response(
@@ -102,7 +102,7 @@ class FakeGraphApiForResumableUpload implements HttpClient
         return new Response(200, ['Foo' => 'Bar'], json_encode($data));
     }
 
-    private function respondFinish()
+    private function respondFinish(): Response
     {
         return new Response(500, ['Foo' => 'Bar'], '{"success":true}');
     }

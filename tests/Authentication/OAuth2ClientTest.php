@@ -47,14 +47,14 @@ class OAuth2ClientTest extends TestCase
      */
     protected $oauth;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $app = new Application('123', 'foo_secret');
         $this->client = new FooClientForOAuth2Test();
         $this->oauth = new OAuth2Client($app, $this->client, static::TESTING_GRAPH_VERSION);
     }
 
-    public function testCanGetMetadataFromAnAccessToken()
+    public function testCanGetMetadataFromAnAccessToken(): void
     {
         $this->client->setMetadataResponse();
 
@@ -76,12 +76,12 @@ class OAuth2ClientTest extends TestCase
         $this->assertEquals(static::TESTING_GRAPH_VERSION, $request->getGraphVersion());
     }
 
-    public function testCanBuildAuthorizationUrl()
+    public function testCanBuildAuthorizationUrl(): void
     {
         $scope = ['email', 'base_foo'];
         $authUrl = $this->oauth->getAuthorizationUrl('https://foo.bar', 'foo_state', $scope, ['foo' => 'bar'], '*');
 
-        $this->assertContains('*', $authUrl);
+        $this->assertStringContainsString('*', $authUrl);
 
         $expectedUrl = 'https://www.facebook.com/' . static::TESTING_GRAPH_VERSION . '/dialog/oauth?';
         $this->assertStringStartsWith($expectedUrl, $authUrl, 'Unexpected base authorization URL returned from getAuthorizationUrl().');
@@ -95,11 +95,11 @@ class OAuth2ClientTest extends TestCase
             'foo' => 'bar',
         ];
         foreach ($params as $key => $value) {
-            $this->assertContains($key . '=' . urlencode($value), $authUrl);
+            $this->assertStringContainsString($key . '=' . urlencode($value), $authUrl);
         }
     }
 
-    public function testCanGetAccessTokenFromCode()
+    public function testCanGetAccessTokenFromCode(): void
     {
         $this->client->setAccessTokenResponse();
 
@@ -124,7 +124,7 @@ class OAuth2ClientTest extends TestCase
         $this->assertEquals(static::TESTING_GRAPH_VERSION, $request->getGraphVersion());
     }
 
-    public function testCanGetLongLivedAccessToken()
+    public function testCanGetLongLivedAccessToken(): void
     {
         $this->client->setAccessTokenResponse();
 
@@ -145,7 +145,7 @@ class OAuth2ClientTest extends TestCase
         $this->assertEquals($expectedParams, $request->getParams());
     }
 
-    public function testCanGetCodeFromLongLivedAccessToken()
+    public function testCanGetCodeFromLongLivedAccessToken(): void
     {
         $this->client->setCodeResponse();
 

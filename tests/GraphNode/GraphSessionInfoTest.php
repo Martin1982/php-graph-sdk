@@ -25,21 +25,24 @@ namespace Facebook\Tests\GraphNode;
 use Facebook\GraphNode\GraphNodeFactory;
 use Facebook\Response;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class GraphSessionInfoTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy|Response
      */
     protected $responseMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->responseMock = $this->prophesize(Response::class);
     }
 
-    public function testDatesGetCastToDateTime()
+    public function testDatesGetCastToDateTime(): void
     {
         $dataFromGraph = [
             'expires_at' => 123,

@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestCase;
 
 class UrlDetectionHandlerTest extends TestCase
 {
-    public function testProperlyGeneratesUrlFromCommonScenario()
+    public function testProperlyGeneratesUrlFromCommonScenario(): void
     {
         $_SERVER = [
             'HTTP_HOST' => 'foo.bar',
@@ -41,7 +41,7 @@ class UrlDetectionHandlerTest extends TestCase
         $this->assertEquals('http://foo.bar/baz?foo=123', $currentUri);
     }
 
-    public function testProperlyGeneratesSecureUrlFromCommonScenario()
+    public function testProperlyGeneratesSecureUrlFromCommonScenario(): void
     {
         $_SERVER = [
             'HTTP_HOST' => 'foo.bar',
@@ -55,7 +55,7 @@ class UrlDetectionHandlerTest extends TestCase
         $this->assertEquals('https://foo.bar/baz?foo=123', $currentUri);
     }
 
-    public function testProperlyGeneratesUrlFromProxy()
+    public function testProperlyGeneratesUrlFromProxy(): void
     {
         $_SERVER = [
             'HTTP_X_FORWARDED_PORT' => '80',
@@ -71,7 +71,7 @@ class UrlDetectionHandlerTest extends TestCase
         $this->assertEquals('http://foo.bar/baz?foo=123', $currentUri);
     }
 
-    public function testProperlyGeneratesSecureUrlFromProxy()
+    public function testProperlyGeneratesSecureUrlFromProxy(): void
     {
         $_SERVER = [
             'HTTP_X_FORWARDED_PORT' => '443',
@@ -87,7 +87,7 @@ class UrlDetectionHandlerTest extends TestCase
         $this->assertEquals('https://foo.bar/baz?foo=123', $currentUri);
     }
 
-    public function testProperlyGeneratesUrlWithCustomPort()
+    public function testProperlyGeneratesUrlWithCustomPort(): void
     {
         $_SERVER = [
             'HTTP_HOST' => 'foo.bar',
@@ -101,7 +101,7 @@ class UrlDetectionHandlerTest extends TestCase
         $this->assertEquals('http://foo.bar:1337/foo.php', $currentUri);
     }
 
-    public function testProperlyGeneratesSecureUrlWithCustomPort()
+    public function testProperlyGeneratesSecureUrlWithCustomPort(): void
     {
         $_SERVER = [
             'HTTP_HOST' => 'foo.bar',
@@ -116,7 +116,7 @@ class UrlDetectionHandlerTest extends TestCase
         $this->assertEquals('https://foo.bar:1337/foo.php', $currentUri);
     }
 
-    public function testProperlyGeneratesUrlWithCustomPortFromProxy()
+    public function testProperlyGeneratesUrlWithCustomPortFromProxy(): void
     {
         $_SERVER = [
             'HTTP_X_FORWARDED_PORT' => '8888',

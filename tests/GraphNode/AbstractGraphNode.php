@@ -34,14 +34,14 @@ abstract class AbstractGraphNode extends TestCase
      */
     protected $responseMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->responseMock = $this->prophesize(Response::class);
     }
 
-    protected function makeFactoryWithData($data)
+    protected function makeFactoryWithData($data): GraphNodeFactory
     {
         $this->responseMock->getDecodedBody()->willReturn($data);
 

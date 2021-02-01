@@ -27,22 +27,24 @@ use Facebook\GraphNode\GraphPage;
 use Facebook\GraphNode\GraphUser;
 use Facebook\Response;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class GraphAlbumTest extends TestCase
 {
+    use ProphecyTrait;
 
     /**
      * @var ObjectProphecy|Response
      */
     protected $responseMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->responseMock = $this->prophesize(Response::class);
     }
 
-    public function testDatesGetCastToDateTime()
+    public function testDatesGetCastToDateTime(): void
     {
         $dataFromGraph = [
             'created_time' => '2014-07-15T03:54:34+0000',
@@ -62,7 +64,7 @@ class GraphAlbumTest extends TestCase
         $this->assertInstanceOf(\DateTime::class, $updatedTime);
     }
 
-    public function testFromGetsCastAsGraphUser()
+    public function testFromGetsCastAsGraphUser(): void
     {
         $dataFromGraph = [
             'id' => '123',
@@ -81,7 +83,7 @@ class GraphAlbumTest extends TestCase
         $this->assertInstanceOf(GraphUser::class, $from);
     }
 
-    public function testPlacePropertyWillGetCastAsGraphPageObject()
+    public function testPlacePropertyWillGetCastAsGraphPageObject(): void
     {
         $dataFromGraph = [
             'id' => '123',

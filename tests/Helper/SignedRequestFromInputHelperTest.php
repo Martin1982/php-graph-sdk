@@ -39,13 +39,13 @@ class SignedRequestFromInputHelperTest extends TestCase
     public $rawSignedRequestAuthorizedWithCode = 'oBtmZlsFguNQvGRETDYQQu1-PhwcArgbBBEK4urbpRA=.eyJjb2RlIjoiZm9vX2NvZGUiLCJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImlzc3VlZF9hdCI6MTQwNjMxMDc1MiwidXNlcl9pZCI6IjEyMyJ9';
     public $rawSignedRequestUnauthorized = 'KPlyhz-whtYAhHWr15N5TkbS_avz-2rUJFpFkfXKC88=.eyJhbGdvcml0aG0iOiJITUFDLVNIQTI1NiIsImlzc3VlZF9hdCI6MTQwMjU1MTA4Nn0=';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $app = new Application('123', 'foo_app_secret');
         $this->helper = new FooSignedRequestHelper($app, new FooSignedRequestHelperClient(), 'v0.0');
     }
 
-    public function testSignedRequestDataCanBeRetrievedFromPostData()
+    public function testSignedRequestDataCanBeRetrievedFromPostData(): void
     {
         $_POST['signed_request'] = 'foo_signed_request';
 
@@ -54,7 +54,7 @@ class SignedRequestFromInputHelperTest extends TestCase
         $this->assertEquals('foo_signed_request', $rawSignedRequest);
     }
 
-    public function testSignedRequestDataCanBeRetrievedFromCookieData()
+    public function testSignedRequestDataCanBeRetrievedFromCookieData(): void
     {
         $_COOKIE['fbsr_123'] = 'foo_signed_request';
 
@@ -63,7 +63,7 @@ class SignedRequestFromInputHelperTest extends TestCase
         $this->assertEquals('foo_signed_request', $rawSignedRequest);
     }
 
-    public function testAccessTokenWillBeNullWhenAUserHasNotYetAuthorizedTheApp()
+    public function testAccessTokenWillBeNullWhenAUserHasNotYetAuthorizedTheApp(): void
     {
         $this->helper->instantiateSignedRequest($this->rawSignedRequestUnauthorized);
         $accessToken = $this->helper->getAccessToken();
@@ -71,7 +71,7 @@ class SignedRequestFromInputHelperTest extends TestCase
         $this->assertNull($accessToken);
     }
 
-    public function testAnAccessTokenCanBeInstantiatedWhenRedirectReturnsAnAccessToken()
+    public function testAnAccessTokenCanBeInstantiatedWhenRedirectReturnsAnAccessToken(): void
     {
         $this->helper->instantiateSignedRequest($this->rawSignedRequestAuthorizedWithAccessToken);
         $accessToken = $this->helper->getAccessToken();
@@ -80,7 +80,7 @@ class SignedRequestFromInputHelperTest extends TestCase
         $this->assertEquals('foo_token', $accessToken->getValue());
     }
 
-    public function testAnAccessTokenCanBeInstantiatedWhenRedirectReturnsACode()
+    public function testAnAccessTokenCanBeInstantiatedWhenRedirectReturnsACode(): void
     {
         $this->helper->instantiateSignedRequest($this->rawSignedRequestAuthorizedWithCode);
         $accessToken = $this->helper->getAccessToken();

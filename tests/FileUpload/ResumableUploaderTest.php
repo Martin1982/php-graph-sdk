@@ -53,7 +53,7 @@ class ResumableUploaderTest extends TestCase
      */
     private $file;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->fbApp = new Application('app_id', 'app_secret');
         $this->graphApi = new FakeGraphApiForResumableUpload();
@@ -61,7 +61,7 @@ class ResumableUploaderTest extends TestCase
         $this->file = new File(__DIR__.'/../foo.txt');
     }
 
-    public function testResumableUploadCanStartTransferAndFinish()
+    public function testResumableUploadCanStartTransferAndFinish(): void
     {
         $uploader = new ResumableUploader($this->fbApp, $this->client, 'access_token', 'v2.4');
         $endpoint = '/me/videos';
@@ -78,18 +78,16 @@ class ResumableUploaderTest extends TestCase
         $this->assertTrue($finalResponse);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\ResponseException
-     */
-    public function testStartWillLetErrorResponsesThrow()
+    public function testStartWillLetErrorResponsesThrow(): void
     {
+        $this->expectException(\Facebook\Exception\ResponseException::class);
         $this->graphApi->failOnStart();
         $uploader = new ResumableUploader($this->fbApp, $this->client, 'access_token', 'v2.4');
 
         $uploader->start('/me/videos', $this->file);
     }
 
-    public function testFailedResumableTransferWillNotThrowAndReturnSameChunk()
+    public function testFailedResumableTransferWillNotThrowAndReturnSameChunk(): void
     {
         $this->graphApi->failOnTransfer();
         $uploader = new ResumableUploader($this->fbApp, $this->client, 'access_token', 'v2.4');

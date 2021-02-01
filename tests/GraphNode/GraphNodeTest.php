@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
 
 class GraphNodeTest extends TestCase
 {
-    public function testAnEmptyBaseGraphNodeCanInstantiate()
+    public function testAnEmptyBaseGraphNodeCanInstantiate(): void
     {
         $graphNode = new GraphNode();
         $backingData = $graphNode->asArray();
@@ -36,7 +36,7 @@ class GraphNodeTest extends TestCase
         $this->assertEquals([], $backingData);
     }
 
-    public function testAGraphNodeCanInstantiateWithData()
+    public function testAGraphNodeCanInstantiateWithData(): void
     {
         $graphNode = new GraphNode(['foo' => 'bar']);
         $backingData = $graphNode->asArray();
@@ -47,14 +47,14 @@ class GraphNodeTest extends TestCase
     /**
      * @dataProvider provideDateTimeFieldNames
      */
-    public function testCastDateTimeFieldsToDateTime($fieldName)
+    public function testCastDateTimeFieldsToDateTime($fieldName): void
     {
         $graphNode = new GraphNode([$fieldName => '1989-11-02']);
 
         $this->assertInstanceOf(\DateTime::class, $graphNode->getField($fieldName));
     }
 
-    public static function provideDateTimeFieldNames()
+    public static function provideDateTimeFieldNames(): ?\Generator
     {
         yield ['created_time'];
         yield ['updated_time'];
@@ -70,7 +70,7 @@ class GraphNodeTest extends TestCase
     /**
      * @dataProvider provideValidDateTimeFieldValues
      */
-    public function testCastDateTimeFieldValueToDateTime($value, $message, $prettyDate = null)
+    public function testCastDateTimeFieldValueToDateTime($value, $message, $prettyDate = null): void
     {
         $graphNode = new GraphNode(['created_time' => $value]);
 
@@ -81,7 +81,7 @@ class GraphNodeTest extends TestCase
         }
     }
 
-    public static function provideValidDateTimeFieldValues()
+    public static function provideValidDateTimeFieldValues(): ?\Generator
     {
         yield ['1985-10-26T01:21:00+0000', 'Expected the valid ISO 8601 formatted date from Back To The Future to pass.'];
         yield ['2014-07-15T03:44:53+0000', 'Expected the valid ISO 8601 formatted date to pass.', 'Tue, 15 Jul 14 03:44:53 +0000'];
@@ -94,27 +94,27 @@ class GraphNodeTest extends TestCase
     /**
      * @dataProvider provideInvalidDateTimeFieldValues
      */
-    public function testNotCastDateTimeFieldValueToDateTime($value, $message)
+    public function testNotCastDateTimeFieldValueToDateTime($value, $message): void
     {
         $graphNode = new GraphNode(['created_time' => $value]);
 
         $this->assertNotInstanceOf(\DateTime::class, $graphNode->getField('created_time'), $message);
     }
 
-    public static function provideInvalidDateTimeFieldValues()
+    public static function provideInvalidDateTimeFieldValues(): ?\Generator
     {
         yield ['2009-05-19T14a39r', 'Expected the invalid ISO 8601 format to fail.'];
         yield ['foo_time', 'Expected the invalid ISO 8601 format to fail.'];
     }
 
-    public function testCastBirthdayFieldValueToBirthday()
+    public function testCastBirthdayFieldValueToBirthday(): void
     {
         $graphNode = new GraphNode(['birthday' => '11/02/1989']);
 
         $this->assertInstanceOf(Birthday::class, $graphNode->getField('birthday'));
     }
 
-    public function testGettingGraphNodeAsAnArrayWillNotUncastTheDateTimeObject()
+    public function testGettingGraphNodeAsAnArrayWillNotUncastTheDateTimeObject(): void
     {
         $graphNode = new GraphNode([
             'id' => '123',
@@ -126,7 +126,7 @@ class GraphNodeTest extends TestCase
         $this->assertInstanceOf(\DateTime::class, $graphNodeAsArray['created_time']);
     }
 
-    public function testGettingAGraphNodeAsAStringWillSafelyRepresentDateTimes()
+    public function testGettingAGraphNodeAsAStringWillSafelyRepresentDateTimes(): void
     {
         $graphNode = new GraphNode([
             'id' => '123',
@@ -138,7 +138,7 @@ class GraphNodeTest extends TestCase
         $this->assertEquals('{"id":"123","created_time":"2014-07-15T03:44:53+0000"}', $graphNodeAsString);
     }
 
-    public function testAnExistingFieldCanBeAccessed()
+    public function testAnExistingFieldCanBeAccessed(): void
     {
         $graphNode = new GraphNode(['foo' => 'bar']);
 
@@ -146,7 +146,7 @@ class GraphNodeTest extends TestCase
         $this->assertEquals('bar', $field);
     }
 
-    public function testAMissingFieldWillReturnNull()
+    public function testAMissingFieldWillReturnNull(): void
     {
         $graphNode = new GraphNode(['foo' => 'bar']);
         $field = $graphNode->getField('baz');
@@ -154,7 +154,7 @@ class GraphNodeTest extends TestCase
         $this->assertNull($field, 'Expected the property to return null.');
     }
 
-    public function testAMissingFieldWillReturnTheDefault()
+    public function testAMissingFieldWillReturnTheDefault(): void
     {
         $graphNode = new GraphNode(['foo' => 'bar']);
 
@@ -162,7 +162,7 @@ class GraphNodeTest extends TestCase
         $this->assertEquals('faz', $field);
     }
 
-    public function testFalseDefaultsWillReturnSameType()
+    public function testFalseDefaultsWillReturnSameType(): void
     {
         $graphNode = new GraphNode(['foo' => 'bar']);
 
@@ -176,7 +176,7 @@ class GraphNodeTest extends TestCase
         $this->assertFalse($field);
     }
 
-    public function testTheFieldsFromTheGraphNodeCanBeReturned()
+    public function testTheFieldsFromTheGraphNodeCanBeReturned(): void
     {
         $graphNode = new GraphNode([
             'field1' => 'foo',
@@ -188,7 +188,7 @@ class GraphNodeTest extends TestCase
         $this->assertEquals(['field1', 'field2', 'field3'], $fieldNames);
     }
 
-    public function testAGraphNodeCanBeConvertedToAString()
+    public function testAGraphNodeCanBeConvertedToAString(): void
     {
         $graphNode = new GraphNode(['foo', 'bar', 123]);
 

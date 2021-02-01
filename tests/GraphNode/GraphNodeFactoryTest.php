@@ -40,7 +40,7 @@ class GraphNodeFactoryTest extends TestCase
      */
     protected $request;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $app = new Application('123', 'foo_app_secret');
         $this->request = new Request(
@@ -54,7 +54,7 @@ class GraphNodeFactoryTest extends TestCase
         );
     }
 
-    public function testAValidGraphNodeResponseWillNotThrow()
+    public function testAValidGraphNodeResponseWillNotThrow(): void
     {
         $data = '{"id":"123","name":"foo"}';
         $res = new Response($this->request, $data);
@@ -65,11 +65,9 @@ class GraphNodeFactoryTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testANonGraphNodeResponseWillThrow()
+    public function testANonGraphNodeResponseWillThrow(): void
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $data = '{"data":[{"id":"123","name":"foo"},{"id":"1337","name":"bar"}]}';
         $res = new Response($this->request, $data);
 
@@ -77,7 +75,7 @@ class GraphNodeFactoryTest extends TestCase
         $factory->validateResponseCastableAsGraphNode();
     }
 
-    public function testAValidGraphEdgeResponseWillNotThrow()
+    public function testAValidGraphEdgeResponseWillNotThrow(): void
     {
         $data = '{"data":[{"id":"123","name":"foo"},{"id":"1337","name":"bar"}]}';
         $res = new Response($this->request, $data);
@@ -88,11 +86,9 @@ class GraphNodeFactoryTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testANonGraphEdgeResponseWillThrow()
+    public function testANonGraphEdgeResponseWillThrow(): void
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $data = '{"id":"123","name":"foo"}';
         $res = new Response($this->request, $data);
 
@@ -100,7 +96,7 @@ class GraphNodeFactoryTest extends TestCase
         $factory->validateResponseCastableAsGraphEdge();
     }
 
-    public function testOnlyNumericArraysAreCastableAsAGraphEdge()
+    public function testOnlyNumericArraysAreCastableAsAGraphEdge(): void
     {
         $shouldPassOne = GraphNodeFactory::isCastableAsGraphEdge([]);
         $shouldPassTwo = GraphNodeFactory::isCastableAsGraphEdge(['foo', 'bar']);
@@ -111,15 +107,13 @@ class GraphNodeFactoryTest extends TestCase
         $this->assertFalse($shouldFail, 'Expected the given array to not be castable as a GraphEdge.');
     }
 
-    /**
-     * @expectedException \Facebook\Exception\SDKException
-     */
-    public function testInvalidSubClassesWillThrow()
+    public function testInvalidSubClassesWillThrow(): void
     {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         GraphNodeFactory::validateSubclass('FooSubClass');
     }
 
-    public function testValidSubClassesWillNotThrow()
+    public function testValidSubClassesWillNotThrow(): void
     {
         GraphNodeFactory::validateSubclass(GraphNode::class);
         GraphNodeFactory::validateSubclass(GraphAlbum::class);
@@ -128,7 +122,7 @@ class GraphNodeFactoryTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testCastingAsASubClassObjectWillInstantiateTheSubClass()
+    public function testCastingAsASubClassObjectWillInstantiateTheSubClass(): void
     {
         $data = '{"id":"123","name":"foo"}';
         $res = new Response($this->request, $data);
@@ -139,7 +133,7 @@ class GraphNodeFactoryTest extends TestCase
         $this->assertInstanceOf(MyFooGraphNode::class, $mySubClassObject);
     }
 
-    public function testASubClassMappingWillAutomaticallyInstantiateSubClass()
+    public function testASubClassMappingWillAutomaticallyInstantiateSubClass(): void
     {
         $data = '{"id":"123","name":"Foo Name","foo_object":{"id":"1337","name":"Should be sub classed!"}}';
         $res = new Response($this->request, $data);
@@ -152,7 +146,7 @@ class GraphNodeFactoryTest extends TestCase
         $this->assertInstanceOf(MyFooSubClassGraphNode::class, $fooObject);
     }
 
-    public function testAnUnknownGraphNodeWillBeCastAsAGenericGraphNode()
+    public function testAnUnknownGraphNodeWillBeCastAsAGenericGraphNode(): void
     {
         $data = json_encode([
             'id' => '123',
@@ -174,7 +168,7 @@ class GraphNodeFactoryTest extends TestCase
         $this->assertNotInstanceOf(MyFooGraphNode::class, $unknownObject);
     }
 
-    public function testAListFromGraphWillBeCastAsAGraphEdge()
+    public function testAListFromGraphWillBeCastAsAGraphEdge(): void
     {
         $data = json_encode([
             'data' => [
@@ -213,7 +207,7 @@ class GraphNodeFactoryTest extends TestCase
         ], $graphData[1]);
     }
 
-    public function testAGraphNodeWillBeCastAsAGraphNode()
+    public function testAGraphNodeWillBeCastAsAGraphNode(): void
     {
         $data = json_encode([
             'id' => '123',
@@ -234,7 +228,7 @@ class GraphNodeFactoryTest extends TestCase
         ], $graphData);
     }
 
-    public function testAGraphNodeWithARootDataKeyWillBeCastAsAGraphNode()
+    public function testAGraphNodeWithARootDataKeyWillBeCastAsAGraphNode(): void
     {
         $data = json_encode([
             'data' => [
@@ -258,7 +252,7 @@ class GraphNodeFactoryTest extends TestCase
         ], $graphData);
     }
 
-    public function testAGraphEdgeWillBeCastRecursively()
+    public function testAGraphEdgeWillBeCastRecursively(): void
     {
         $someUser = [
             'id' => '123',
@@ -364,7 +358,7 @@ class GraphNodeFactoryTest extends TestCase
         $this->assertInstanceOf(GraphNode::class, $toUsers[0]);
     }
 
-    public function testAGraphEdgeWillGenerateTheProperParentGraphEdges()
+    public function testAGraphEdgeWillGenerateTheProperParentGraphEdges(): void
     {
         $likesList = [
             'data' => [

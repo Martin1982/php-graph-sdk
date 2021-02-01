@@ -28,7 +28,7 @@ use Psr\Http\Message\RequestInterface;
 
 class MyFooHttpClient implements HttpClient
 {
-    public function sendRequest(RequestInterface $request)
+    public function sendRequest(RequestInterface $request): Response
     {
         return new Response(
             200,

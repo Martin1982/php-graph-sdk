@@ -44,7 +44,7 @@ class RedirectLoginHelperTest extends TestCase
 
     const REDIRECT_URL = 'http://invalid.zzz';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->persistentDataHandler = new InMemoryPersistentDataHandler();
 
@@ -53,7 +53,7 @@ class RedirectLoginHelperTest extends TestCase
         $this->redirectLoginHelper = new RedirectLoginHelper($oAuth2Client, $this->persistentDataHandler);
     }
 
-    public function testLoginURL()
+    public function testLoginURL(): void
     {
         $scope = ['foo', 'bar'];
         $loginUrl = $this->redirectLoginHelper->getLoginUrl(self::REDIRECT_URL, $scope);
@@ -69,11 +69,11 @@ class RedirectLoginHelperTest extends TestCase
             'scope' => implode(',', $scope),
         ];
         foreach ($params as $key => $value) {
-            $this->assertContains($key . '=' . urlencode($value), $loginUrl);
+            $this->assertStringContainsString($key . '=' . urlencode($value), $loginUrl);
         }
     }
 
-    public function testLogoutURL()
+    public function testLogoutURL(): void
     {
         $logoutUrl = $this->redirectLoginHelper->getLogoutUrl('foo_token', self::REDIRECT_URL);
         $expectedUrl = 'https://www.facebook.com/logout.php?';
@@ -84,11 +84,11 @@ class RedirectLoginHelperTest extends TestCase
             'access_token' => 'foo_token',
         ];
         foreach ($params as $key => $value) {
-            $this->assertContains($key . '=' . urlencode($value), $logoutUrl);
+            $this->assertStringContainsString($key . '=' . urlencode($value), $logoutUrl);
         }
     }
 
-    public function testAnAccessTokenCanBeObtainedFromRedirect()
+    public function testAnAccessTokenCanBeObtainedFromRedirect(): void
     {
         $this->persistentDataHandler->set('state', 'foo_state');
         $_GET['state'] = 'foo_state';

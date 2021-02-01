@@ -28,10 +28,10 @@ use Psr\Http\Message\RequestInterface;
 
 class FooHttpClientInterface implements HttpClient
 {
-    public function sendRequest(RequestInterface $request)
+    public function sendRequest(RequestInterface $request): Response
     {
         return new Response(
-            1337,
+            222,
             ['Date' => 'Mon, 19 May 2014 18:37:17 GMT'],
             '{"data":[{"id":"123","name":"Foo"},{"id":"1337","name":"Bar"}]}',
             '1.1',

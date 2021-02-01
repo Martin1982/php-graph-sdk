@@ -29,21 +29,24 @@ use Facebook\GraphNode\GraphPicture;
 use Facebook\GraphNode\GraphPage;
 use Facebook\GraphNode\GraphCoverPhoto;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 
 class GraphEventTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy|Response
      */
     protected $responseMock;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->responseMock = $this->prophesize(Response::class);
     }
 
-    public function testCoverGetsCastAsGraphCoverPhoto()
+    public function testCoverGetsCastAsGraphCoverPhoto(): void
     {
         $dataFromGraph = [
             'cover' => ['id' => '1337']
@@ -57,7 +60,7 @@ class GraphEventTest extends TestCase
         $this->assertInstanceOf(GraphCoverPhoto::class, $cover);
     }
 
-    public function testPlaceGetsCastAsGraphPage()
+    public function testPlaceGetsCastAsGraphPage(): void
     {
         $dataFromGraph = [
             'place' => ['id' => '1337']
@@ -71,7 +74,7 @@ class GraphEventTest extends TestCase
         $this->assertInstanceOf(GraphPage::class, $place);
     }
 
-    public function testPictureGetsCastAsGraphPicture()
+    public function testPictureGetsCastAsGraphPicture(): void
     {
         $dataFromGraph = [
             'picture' => ['id' => '1337']
@@ -85,7 +88,7 @@ class GraphEventTest extends TestCase
         $this->assertInstanceOf(GraphPicture::class, $picture);
     }
 
-    public function testParentGroupGetsCastAsGraphGroup()
+    public function testParentGroupGetsCastAsGraphGroup(): void
     {
         $dataFromGraph = [
             'parent_group' => ['id' => '1337']
