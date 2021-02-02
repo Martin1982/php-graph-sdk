@@ -4,7 +4,7 @@
     "keywords": ["facebook", "sdk"],
     "type": "library",
     "homepage": "https://github.com/Martin1982/php-graph-sdk",
-    "license": "Facebook Platform",
+    "license": "CC-BY-4.0",
     "authors": [
         {
             "name": "Martin de Keijzer",
