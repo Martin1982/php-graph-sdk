@@ -259,6 +259,10 @@ class ClientTest extends TestCase
             );
         }
 
+        if (method_exists(TestCredentials::class, 'init')) {
+            TestCredentials::init();
+        }
+
         if (!strlen(TestCredentials::$appId) ||
             !strlen(TestCredentials::$appSecret)
         ) {

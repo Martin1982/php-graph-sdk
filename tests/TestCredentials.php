@@ -38,5 +38,3 @@ class TestCredentials
         self::$appSecret = getenv('FACEBOOK_APP_SECRET');
     }
 }
-
-TestCredentials::init();
