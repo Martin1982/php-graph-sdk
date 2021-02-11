@@ -2,11 +2,7 @@
 
 ## NOTICE: This branch is under active development. For the stable release please use the [5.x branch](https://github.com/facebook/php-graph-sdk/tree/5.x).
 
-[![Build Status](https://img.shields.io/travis/facebook/php-graph-sdk/master.svg)](https://travis-ci.org/facebook/php-graph-sdk)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/facebook/php-graph-sdk/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/facebook/php-graph-sdk/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/facebook/php-graph-sdk/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/facebook/php-graph-sdk/?branch=master)
-[![Development Version](http://img.shields.io/badge/Development%20Version-v6.0-orange.svg)](https://packagist.org/packages/facebook/graph-sdk)
-
+[![Build Status](https://github.com/martin1982/php-graph-sdk/workflows/Static%20analysis%20of%20php-graph-sdk/badge.svg)](https://travis-ci.org/facebook/php-graph-sdk)
 
 This repository contains the open source PHP SDK that allows you to access the Facebook Platform from your PHP app.
 
