@@ -1,6 +1,4 @@
-# Facebook SDK for PHP (v6)
-
-## NOTICE: This branch is under active development. For the stable release please use the [5.x branch](https://github.com/facebook/php-graph-sdk/tree/5.x).
+# Facebook SDK for PHP (v7)
 
 [![Build Status](https://github.com/martin1982/php-graph-sdk/workflows/Static%20analysis%20of%20php-graph-sdk/badge.svg)](https://travis-ci.org/facebook/php-graph-sdk)
 
@@ -12,15 +10,12 @@ This repository contains the open source PHP SDK that allows you to access the F
 The Facebook PHP SDK can be installed with [Composer](https://getcomposer.org/). Run this command:
 
 ```sh
-composer require facebook/graph-sdk php-http/curl-client guzzlehttp/psr7
+composer require martin1982/facebook-graph-sdk
 ```
-
-Why the extra packages? We give you the flexibility to choose what HTTP client (e.g. cURL or Guzzle) to use and what PSR-7 implementation you prefer. Read more about this at the [HTTPlug documentation](http://php-http.readthedocs.io/en/latest/httplug/users.html).
-
 
 ## Usage
 
-> **Note:** This version of the Facebook SDK for PHP requires PHP 5.6 or greater.
+> **Note:** This version of the Facebook SDK for PHP requires PHP 7.4 or greater.
 
 Simple GET example of a user's profile.
 
@@ -77,17 +72,11 @@ By default the tests will send live HTTP requests to the Graph API. If you are w
 $ ./vendor/bin/phpunit --exclude-group integration
 ```
 
-
-## Contributing
-
-For us to accept contributions you will have to first have signed the [Contributor License Agreement](https://developers.facebook.com/opensource/cla). Please see [CONTRIBUTING](https://github.com/facebook/php-graph-sdk/blob/master/CONTRIBUTING.md) for details.
-
-
 ## License
 
-Please see the [license file](https://github.com/facebook/php-graph-sdk/blob/master/LICENSE) for more information.
-
+Please see the [original license file](https://github.com/martin1982/php-graph-sdk/blob/master/LICENSE) for more information.
+For this fork's code the CC-BY-4.0 license applies.
 
 ## Security Vulnerabilities
 
-If you have found a security issue, please contact the maintainers directly at [me@sammyk.me](mailto:me@sammyk.me).
+If you have found a security issue, please contact the maintainers directly on Github via the Issues.
