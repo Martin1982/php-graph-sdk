@@ -193,7 +193,8 @@ class ClientTest extends TestCase
     }
 
     public function testARequestValidatesTheAccessTokenWhenOneIsNotProvided(): void
-    {$this->expectException(\Facebook\Exception\SDKException::class);
+    {
+        $this->expectException(\Facebook\Exception\SDKException::class);
         $fbRequest = new Request($this->fbApp, null, 'GET', '/foo');
         $this->fbClient->sendRequest($fbRequest);
     }
