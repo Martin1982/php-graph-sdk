@@ -46,6 +46,8 @@ class GraphNodeTest extends TestCase
 
     /**
      * @dataProvider provideDateTimeFieldNames
+     *
+     * @param mixed $fieldName
      */
     public function testCastDateTimeFieldsToDateTime($fieldName): void
     {
@@ -69,6 +71,10 @@ class GraphNodeTest extends TestCase
 
     /**
      * @dataProvider provideValidDateTimeFieldValues
+     *
+     * @param mixed      $value
+     * @param mixed      $message
+     * @param null|mixed $prettyDate
      */
     public function testCastDateTimeFieldValueToDateTime($value, $message, $prettyDate = null): void
     {
@@ -93,6 +99,9 @@ class GraphNodeTest extends TestCase
 
     /**
      * @dataProvider provideInvalidDateTimeFieldValues
+     *
+     * @param mixed $value
+     * @param mixed $message
      */
     public function testNotCastDateTimeFieldValueToDateTime($value, $message): void
     {
