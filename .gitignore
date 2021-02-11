@@ -1,5 +1,4 @@
 vendor/
 composer.lock
-tests/TestCredentials.php
 .idea
 .phpunit.result.cache

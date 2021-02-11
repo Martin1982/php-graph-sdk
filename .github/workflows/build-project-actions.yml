@@ -8,3 +8,6 @@ jobs:
       - uses: actions/checkout@v2
       - uses: php-actions/composer@v5
       - uses: php-actions/phpunit@v2
+        env:
+          FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
+          FACEBOOK_APP_SECRET: ${{ secrets.FACEBOOK_APP_SECRET }}
