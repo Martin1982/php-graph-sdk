@@ -158,7 +158,8 @@ class GraphEdgeTest extends TestCase
     public function testTheKeysFromTheCollectionCanBeReturned(): void
     {
         $graphEdge = new GraphEdge(
-            $this->request, [
+            $this->request,
+            [
                 'key1' => 'foo',
                 'key2' => 'bar',
                 'key3' => 'baz',
