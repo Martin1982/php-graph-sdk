@@ -1,0 +1,10 @@
+name: Static analysis of php-graph-sdk
+on: [push]
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: php-actions/composer@v5
+      - uses: php-actions/phpunit@v2
