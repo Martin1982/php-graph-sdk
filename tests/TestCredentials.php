@@ -34,8 +34,8 @@ class TestCredentials
 
     public static function init(): void
     {
-        self::$appId = $_ENV['FACEBOOK_APP_ID'];
-        self::$appSecret = $_ENV['FACEBOOK_APP_SECRET'];
+        self::$appId = getenv('FACEBOOK_APP_ID');
+        self::$appSecret = getenv('FACEBOOK_APP_SECRET');
     }
 }
 
