@@ -1,7 +1,11 @@
 # CHANGELOG
 
-Starting with version 5, the Facebook PHP SDK follows [SemVer](http://semver.org/).
+## 7.x
 
+- 7.0.1
+  - Fix a bug with required Composer packages
+- 7.0.0
+  - Add compatibility for just PHP 7.4 and 8.x
 
 ## 6.x
 
@@ -24,6 +28,7 @@ Starting with version 5, the Facebook PHP SDK follows [SemVer](http://semver.org
 
 ## 5.x
 
+Starting with version 5, the Facebook PHP SDK follows [SemVer](http://semver.org/).
 Version 5 of the Facebook PHP SDK is a complete refactor of version 4. It comes loaded with lots of new features and a friendlier API.
 
 - 5.6.1 (2017-08-16)
