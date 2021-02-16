@@ -1,16 +1,39 @@
 name: Static analysis of php-graph-sdk
-on: [push, pull_request]
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
 jobs:
   ci:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: php-actions/composer@v5
-      - name: Run PHPCS
-        run: ./vendor/bin/phpcs
-      - name: Run PHPUnit
-        run: ./vendor/bin/phpunit
-        env:
-          FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
-          FACEBOOK_APP_SECRET: ${{ secrets.FACEBOOK_APP_SECRET }}
+    - uses: actions/checkout@v2
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+          
+    - name: Install dependencies
+      if: steps.composer-cache.outputs.cache-hit != 'true'
+      run: composer install --prefer-dist --no-progress --no-suggest
+      
+    - name: Run PHPCS
+      run: ./vendor/bin/phpcs
+      
+    - name: Run PHPUnit
+      run: ./vendor/bin/phpunit
+      env:
+        FACEBOOK_APP_ID: ${{ secrets.FACEBOOK_APP_ID }}
+        FACEBOOK_APP_SECRET: ${{ secrets.FACEBOOK_APP_SECRET }}
