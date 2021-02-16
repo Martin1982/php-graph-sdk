@@ -1,7 +1,7 @@
 name: Static analysis of php-graph-sdk
-on: [push]
+on: [push, pull_request]
 jobs:
-  phpunit:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
