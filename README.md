@@ -1,6 +1,6 @@
 # Facebook SDK for PHP (v7)
 
-[![Build Status](https://github.com/martin1982/php-graph-sdk/workflows/Static%20analysis%20of%20php-graph-sdk/badge.svg)](https://travis-ci.org/facebook/php-graph-sdk)
+[![Build Status](https://github.com/martin1982/php-graph-sdk/workflows/Static%20analysis%20of%20php-graph-sdk/badge.svg)](https://github.com/martin1982/php-graph-sdk/workflows/Static%20analysis%20of%20php-graph-sdk/badge.svg)
 
 This repository contains the open source PHP SDK that allows you to access the Facebook Platform from your PHP app.
 
